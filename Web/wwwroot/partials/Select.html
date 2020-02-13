@@ -1,0 +1,26 @@
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name"/>
+    </div>
+    <h3>Select which columns to include</h3>
+    <p class="helpText">Drag columns into the list on the right and reorder as required. Click the 'x' button to remove selected columns.</span>
+    <div class="form-group">
+        <div class="leftSettingsColumn">
+            <ul class="connectedColumnList" data-bind="foreach: AllInputColumnInfos">
+                <li class="availableColumn blockItem" data-bind="attr: { 'data-bind-col-index': Index }, draggable_column: $data"> <span data-bind="text: Name"></span></li>            
+            </ul>
+            <button class="btn btn-default" data-bind="click: AddAll" style="float:right">Add All</button>
+        </div>
+        <div class="rightSettingsColumn">
+            <ul class="connectedColumnList" data-bind="foreach: IncludedColumnIndexes, sortable_column_list: { data: IncludedColumnIndexes, onMove: MoveAlias, onDrop: AddItem }">
+                <li class="selectedColumn blockItem" data-bind="attr: { 'data-bind-col-index': $data }">
+                    <span class="selectedColumn blockItemText blockItemEditable" data-bind="text: $parent.GetColumnName($index), visible: $parent.IsEditing($index) == false, click: $parent.EnableEditMode"></span>
+                    <input class="blockItemEdit" data-bind="value: $parent.EditColumnName, visible: $parent.IsEditing($index), event: { blur: $parent.FinishedEditMode }" />
+                    <button class="btn btn-sm blockItemRemoveButton" data-bind="click: $parent.RemoveItem, visible: $parent.IsEditing($index) === false">X</button>
+                </li>
+            </ul>
+            <button class="btn btn-default"  data-bind="click: RemoveAll">remove all</button>
+        </div>
+    </div>
+</form>

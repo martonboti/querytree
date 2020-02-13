@@ -1,0 +1,65 @@
+﻿@using Microsoft.Extensions.Options;
+@using QueryTree.Models
+@inject IOptions<CustomizationConfiguration> CustomizationConfiguration
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        @CustomizationConfiguration.Value.SystemName
+        @if (string.IsNullOrEmpty(ViewBag.Title) == false)
+        {
+            <text> - @ViewBag.Title</text>
+        }
+    </title>
+    <style>
+    @@font-face { font-family: 'Glyphicons Halflings'; src: url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.eot'); src: url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.woff2') format('woff2'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.woff') format('woff'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('@CustomizationConfiguration.Value.BaseUri/fonts/glyphicons-halflings-regular.svg') format('svg') }
+    </style>
+    <link type="text/css" href="~/css/site.min.css" rel="stylesheet" />
+    <link type="text/css" href="~/css/jquery.min.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+    @if (string.IsNullOrEmpty(CustomizationConfiguration.Value.ExtraCSS) == false)
+    {
+        <link type="text/css" href="@CustomizationConfiguration.Value.ExtraCSS" rel="stylesheet" />
+    }
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href='@Url.Action("Index", "Home")'>
+                    <img src="@(CustomizationConfiguration.Value.BaseUri + @CustomizationConfiguration.Value.SystemLogo)" /><span class="navbar-brand">@CustomizationConfiguration.Value.SystemName</span>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="container alert-container affix">
+        </div>
+        @RenderBody()
+        <br />
+    </div>
+    @Html.Partial("_FooterPartial")
+    <script src="~/js/base.js"></script>
+    @RenderSection("scripts", required: false)
+    @if (!String.IsNullOrEmpty(CustomizationConfiguration.Value.BaseUri))
+    {
+        <script>
+            if (typeof backend !== 'undefined') {
+                backend.baseUri = "@CustomizationConfiguration.Value.BaseUri";
+            }
+        </script>
+    }
+</body>
+</html>

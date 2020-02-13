@@ -1,0 +1,47 @@
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input class="form-control" type="text" name="Name" data-bind="value: Name" />
+    </div>
+    <!--ko foreach: Statistics-->
+    <div class="form-group">
+        <label>Calculate the</label>
+        <select class="form-control" name="AggFunction" data-bind="options: $parent.AggFunctions, optionsText: 'text', optionsValue: 'id', value: AggFunction"></select>
+    </div>
+    <!--ko if: AggFunction() != 1-->
+    <div class="form-group">
+        <label for="AggColumn">Of column</label>
+        <select class="form-control" name="AggColumn" data-bind="options: $parent.AggColumns, optionsText: 'Name', optionsValue: 'Index', value: AggColumn"></select>
+    </div>
+    <!--/ko-->
+    <!--ko if: $parent.Statistics().length > 1-->
+    <div class="form-group">
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveStatistic">Remove</a>
+    </div>
+    <!--/ko-->
+    <!--/ko-->
+    <a class="btn btn-default" data-bind="click: AddStatistic">Add</a>
+    <!--ko if: GroupByColumns().length == 0-->
+    <a class="btn btn-primary" data-bind="click: AddGroupBy">Breakdown Statistics</a>
+    <!--/ko-->
+    <!--ko if: GroupByColumns().length > 0-->
+    <!--ko foreach: GroupByColumns-->
+    <div class="form-group">
+        <!--ko if: $index() == 0-->
+        <label for="SplitBy">Breakdown by</label>
+        <!--/ko-->
+        <!--ko if: $index() > 0-->
+        <label for="SplitBy">Then by</label>
+        <!--/ko-->
+        <select class="form-control" name="SplitBy" data-bind="options: $parent.GroupColumns, optionsText: 'Name', optionsValue: 'Index', value: index"></select>
+        <!--ko if: $parent.GroupByFunctions(index()).length > 0-->
+        <select class="form-control" name="DateFunction" data-bind="options: $parent.GroupByFunctions(index()), optionsText: 'text', optionsValue: 'id', value: groupByFunction"></select>
+        <!--/ko-->
+    </div>
+    <div class="form-group">
+        <a class="btn btn-warning" data-bind="click: $parent.RemoveGroupBy">Remove</a>
+    </div>
+    <!--/ko-->
+    <a class="btn btn-default" data-bind="click: AddGroupBy">Add</a>
+    <!--/ko-->
+</form>
